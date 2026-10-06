@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0d12">
+<title>AWSMeme.com — Cow Clicker</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, #252b3d 0%, #0b0d12 45%),
+    #0b0d12;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+button {
+  font: inherit;
+}
+
+:root {
+  --panel: rgba(24, 28, 39, 0.92);
+  --panel2: #171b26;
+  --border: rgba(255,255,255,.1);
+  --yellow: #ffd43b;
+  --blue: #4dabf7;
+  --purple: #b56cff;
+  --green: #51cf66;
+  --red: #ff6b6b;
+}
+
+/* HEADER */
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  background: rgba(9, 11, 16, .9);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.logo span {
+  color: var(--yellow);
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+}
+
+.nav button {
+  border: 0;
+  background: #202532;
+  color: white;
+  padding: 9px 13px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.nav button:hover {
+  background: #303746;
+}
+
+/* MAIN */
+
+.container {
+  width: min(1150px, calc(100% - 24px));
+  margin: auto;
+}
+
+.hero {
+  text-align: center;
+  padding: 35px 10px 20px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(30px, 7vw, 58px);
+  font-weight: 1000;
+}
+
+.hero h1 span {
+  color: var(--yellow);
+}
+
+.hero p {
+  margin: 10px 0 0;
+  color: #9da5b5;
+}
+
+/* HUD */
+
+.hud {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 14px;
+  text-align: center;
+  box-shadow: 0 10px 35px rgba(0,0,0,.2);
+}
+
+.stat small {
+  color: #9da5b5;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.stat strong {
+  font-size: 21px;
+}
+
+/* GAME */
+
+.game {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+}
+
+.game-card {
+  position: relative;
+  min-height: 550px;
+  background:
+    radial-gradient(circle at center, #30384e 0%, #181d2a 38%, #11141c 75%);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+
+.game-card::before {
+  content: "AWSMEME.COM";
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  color: rgba(255,255,255,.08);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 3px;
+}
+
+.cow-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cow {
+  border: 0;
+  background: transparent;
+  font-size: clamp(130px, 24vw, 230px);
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  transition: transform .08s;
+  filter: drop-shadow(0 20px 20px rgba(0,0,0,.4));
+}
+
+.cow:hover {
+  transform: scale(1.04);
+}
+
+.cow:active {
+  transform: scale(.88);
+}
+
+.click-hint {
+  color: #9da5b5;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.message {
+  min-height: 25px;
+  margin-top: 12px;
+  color: var(--yellow);
+  font-weight: 800;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.action {
+  border: 0;
+  border-radius: 11px;
+  padding: 12px 17px;
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.shop-btn {
+  background: var(--blue);
+}
+
+.ascend-btn {
+  background: var(--purple);
+}
+
+.reset-btn {
+  background: #303644;
+}
+
+.action:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+/* ASCEND */
+
+.ascend-box {
+  width: min(500px, 90%);
+  margin-top: 18px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  color: #9da5b5;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.progress {
+  height: 9px;
+  background: #080a0f;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--purple), #e2b5ff);
+  border-radius: inherit;
+  transition: width .2s;
+}
+
+/* SIDE PANEL */
+
+.info-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 18px;
+  height: fit-content;
+}
+
+.info-card h2 {
+  margin-top: 0;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.info-row:last-child {
+  border-bottom: 0;
+}
+
+.info-row span:first-child {
+  color: #9da5b5;
+}
+
+.tip {
+  margin-top: 18px;
+  padding: 13px;
+  border-radius: 12px;
+  background: rgba(255,212,59,.08);
+  border: 1px solid rgba(255,212,59,.15);
+  color: #ddd;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* SHOP */
+
+.shop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.shop-overlay.open {
+  display: flex;
+}
+
+.shop {
+  width: min(700px, 100%);
+  max-height: 90vh;
+  background: #11151e;
+  border: 1px solid #3a4254;
+  border-radius: 20px;
+  box-shadow: 0 30px 100px black;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.shop-head {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.shop-head h2 {
+  margin: 0;
+}
+
+.close {
+  border: 0;
+  background: #292f3c;
+  color: white;
+  border-radius: 9px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.shop-sub {
+  color: #8f98aa;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.shop-list {
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.upgrade {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 13px;
+  margin-bottom: 9px;
+  transition: .15s;
+}
+
+.upgrade:hover {
+  border-color: #59647b;
+  transform: translateY(-1px);
+}
+
+.upgrade.locked {
+  opacity: .42;
+}
+
+.upgrade-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.upgrade-name {
+  font-weight: 900;
+}
+
+.badge {
+  background: #2c3341;
+  color: #aeb7c8;
+  padding: 4px 7px;
+  border-radius: 7px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.upgrade-info {
+  color: #9da5b5;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 7px 0;
+}
+
+.buy {
+  width: 100%;
+  border: 0;
+  border-radius: 9px;
+  padding: 10px;
+  background: var(--blue);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.buy:disabled {
+  background: #292f3a;
+  color: #777f8e;
+  cursor: not-allowed;
+}
+
+/* FLOATING NUMBERS */
+
+.float {
+  position: fixed;
+  pointer-events: none;
+  z-index: 200;
+  font-weight: 1000;
+  color: var(--yellow);
+  animation: floatUp .8s ease-out forwards;
+  text-shadow: 0 2px 10px black;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-90px) scale(1.3);
+  }
+}
+
+/* TOAST */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 25px;
+  transform: translate(-50%, 100px);
+  z-index: 300;
+  background: #fff;
+  color: #111;
+  font-weight: 900;
+  padding: 12px 18px;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.4);
+  transition: transform .25s;
+}
+
+.toast.show {
+  transform: translate(-50%, 0);
+}
+
+/* FOOTER */
+
+footer {
+  text-align: center;
+  padding: 35px 10px;
+  color: #667083;
+  font-size: 12px;
+}
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+  header {
+    padding: 0 12px;
+  }
+
+  .nav button {
+    padding: 8px 10px;
+  }
+
+  .game {
+    grid-template-columns: 1fr;
+  }
+
+  .info-card {
+    order: 2;
+  }
+
+  .game-card {
+    min-height: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hud {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .nav button {
+    font-size: 12px;
+  }
+
+  .hero {
+    padding-top: 25px;
+  }
+
+  .game-card {
+    min-height: 470px;
+    border-radius: 17px;
+  }
+
+  .shop {
+    max-height: 94vh;
+    border-radius: 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🐄 <span>AWSMeme</span>.com</div>
+
+  <div class="nav">
+    <button onclick="openShop()">🛒 Shop</button>
+    <button onclick="saveGame(); showToast('💾 Game saved!')">💾 Save</button>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <h1>🐄 <span>Cow Clicker</span></h1>
+    <p>Click the cow. Make money. Become the ultimate cow.</p>
+  </section>
+
+  <section class="hud">
+
+    <div class="stat">
+      <small>🪙 Coins</small>
+      <strong id="coins">0</strong>
+    </div>
+
+    <div class="stat">
+      <small>💥 Per Moo</small>
+      <strong id="perClick">1</strong>
+    </div>
+
+    <div class="stat">
+      <small>🤖 Auto Moos</small>
+      <strong id="autoMoos">0/s</strong>
+    </div>
+
+    <div class="stat">
+      <small>✨ Multiplier</small>
+      <strong id="multiplier">x1.00</strong>
+    </div>
+
+  </section>
+
+  <section class="game">
+
+    <div class="game-card">
+
+      <div class="cow-area">
+        <button class="cow" id="cow" aria-label="Click cow">🐄</button>
+      </div>
+
+      <div class="click-hint">
+        TAP / CLICK THE COW
+      </div>
+
+      <div class="message" id="message"></div>
+
+      <div class="actions">
+        <button class="action shop-btn" onclick="openShop()">
+          🛒 Open Shop
+        </button>
+
+        <button class="action ascend-btn" id="ascendBtn" onclick="ascend()">
+          ⬆️ Ascend
+        </button>
+
+        <button class="action reset-btn" onclick="resetGame()">
+          ↻ Reset
+        </button>
+      </div>
+
+      <div class="ascend-box">
+
+        <div class="progress-label">
+          <span>Ascension Progress</span>
+          <span id="ascendText">0 / 1K clicks</span>
+        </div>
+
+        <div class="progress">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <aside class="info-card">
+
+      <h2>📊 Stats</h2>
+
+      <div class="info-row">
+        <span>Total Clicks</span>
+        <b id="clicks">0</b>
+      </div>
+
+      <div class="info-row">
+        <span>Ascensions</span>
+        <b id="ascensions">0</b>
+      </div>
+
+      <div class="info-row">
+        <span>Upgrades</span>
+        <b id="upgrades">0/100</b>
+      </div>
+
+      <div class="info-row">
+        <span>Current Bonus</span>
+        <b id="bonus">x1.00</b>
+      </div>
+
+      <div class="tip">
+        💡 <b>Tip:</b> Buy upgrades in order. Once an upgrade is unlocked,
+        you can buy it as many times as you want.
+      </div>
+
+      <div class="tip">
+        ✨ <b>Ascend:</b> Reach the required number of clicks to reset your
+        progress and gain a permanent x1.5 multiplier.
+      </div>
+
+    </aside>
+
+  </section>
+
+</main>
+
+<footer>
+  AWSMeme.com • Cow Clicker • Made for maximum moo
+</footer>
+
+<!-- SHOP -->
+
+<div class="shop-overlay" id="shopOverlay" onclick="overlayClick(event)">
+
+  <div class="shop">
+
+    <div class="shop-head">
+
+      <div>
+        <h2>🛒 Cow Shop <span id="shopCount">0/100</span></h2>
+        <div class="shop-sub">
+          Unlock upgrades in order • Unlimited purchases
+        </div>
+      </div>
+
+      <button class="close" onclick="closeShop()">✕</button>
+
+    </div>
+
+    <div class="shop-list" id="shopList"></div>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* =========================
+   GAME DATA
+========================= */
+
+const SAVE_KEY = "awsmeme_cow_clicker_v3";
+
+let coins = 0;
+let clicks = 0;
+let perClick = 1;
+let autoMoos = 0;
+let multiplier = 1;
+let ascensions = 0;
+let unlocked = 0;
+
+const shopItems = [];
+
+for (let i = 1; i <= 100; i++) {
+
+  shopItems.push({
+    id: i,
+    name: "Moo Upgrade #" + i,
+    baseCost: Math.max(
+      10,
+      Math.floor(10 * Math.pow(1.4, i - 1))
+    ),
+    purchases: 0,
+    unlocked: false
+  });
+
+}
+
+/* =========================
+   NUMBER FORMAT
+========================= */
+
+function formatNumber(n) {
+
+  if (!Number.isFinite(n)) return "∞";
+
+  const units = [
+    "",
+    "K",
+    "M",
+    "B",
+    "T",
+    "Qa",
+    "Qi",
+    "Sx",
+    "Sp",
+    "Oc",
+    "No",
+    "Dc"
+  ];
+
+  let index = 0;
+
+  while (
+    Math.abs(n) >= 1000 &&
+    index < units.length - 1
+  ) {
+    n /= 1000;
+    index++;
+  }
+
+  if (index === 0) {
+    return Math.floor(n).toString();
+  }
+
+  if (Math.abs(n) >= 100) {
+    return n.toFixed(0) + units[index];
+  }
+
+  if (Math.abs(n) >= 10) {
+    return n.toFixed(1) + units[index];
+  }
+
+  return n.toFixed(2) + units[index];
+}
+
+/* =========================
+   COSTS
+========================= */
+
+function getPrice(item) {
+
+  return Math.floor(
+    item.baseCost *
+    Math.pow(1.15, item.purchases)
+  );
+
+}
+
+function ascendRequirement() {
+
+  return Math.floor(
+    1000 * Math.pow(2, ascensions)
+  );
+
+}
+
+/* =========================
+   SHOP
+========================= */
+
+function renderShop() {
+
+  const list = document.getElementById("shopList");
+
+  list.innerHTML = "";
+
+  shopItems.forEach((item, index) => {
+
+    const locked = index > unlocked;
+    const price = getPrice(item);
+
+    const div = document.createElement("div");
+
+    div.className =
+      "upgrade" + (locked ? " locked" : "");
+
+    const effect =
+      item.id % 5 === 0
+        ? "+" + item.id + " coins per click"
+        : "+" + item.id + " auto moos/sec";
+
+    div.innerHTML = `
+      <div class="upgrade-top">
+        <div class="upgrade-name">
+          ${locked ? "🔒" : "🐄"} ${item.name}
+        </div>
+
+        <div class="badge">
+          ${item.purchases} bought
+        </div>
+      </div>
+
+      <div class="upgrade-info">
+        💰 Cost: <b>${formatNumber(price)}</b> coins<br>
+        ⚡ Effect: ${effect}<br>
+        ${locked ? "🔒 Unlock the previous upgrade first." : "✅ Available"}
+      </div>
+
+      <button class="buy" ${locked ? "disabled" : ""}>
+        ${locked ? "🔒 LOCKED" : "BUY FOR " + formatNumber(price)}
+      </button>
+    `;
+
+    if (!locked) {
+
+      div.querySelector(".buy").onclick = () => {
+        buyUpgrade(index);
+      };
+
+    }
+
+    list.appendChild(div);
+
+  });
+
+}
+
+/* =========================
+   BUY UPGRADE
+========================= */
+
+function buyUpgrade(index) {
+
+  const item = shopItems[index];
+
+  if (index > unlocked) {
+
+    showToast("🔒 Unlock the previous upgrade first!");
+
+    return;
+  }
+
+  const price = getPrice(item);
+
+  if (coins < price) {
+
+    showToast("❌ Not enough coins!");
+
+    return;
+  }
+
+  coins -= price;
+
+  item.purchases++;
+
+  if (!item.unlocked) {
+
+    item.unlocked = true;
+
+    unlocked++;
+
+  }
+
+  if (item.id % 5 === 0) {
+
+    perClick += item.id;
+
+  } else {
+
+    autoMoos += item.id;
+
+  }
+
+  showToast("🐄 Bought " + item.name + "!");
+
+  render();
+
+  saveGame();
+
+}
+
+/* =========================
+   COW CLICK
+========================= */
+
+document.getElementById("cow").addEventListener(
+  "click",
+  function(event) {
+
+    const amount =
+      perClick * multiplier;
+
+    coins += amount;
+    clicks++;
+
+    createFloatingNumber(
+      "+" + formatNumber(amount),
+      event.clientX,
+      event.clientY
+    );
+
+    render();
+
+  }
+);
+
+/* =========================
+   AUTO MOOS
+========================= */
+
+setInterval(function() {
+
+  if (autoMoos > 0) {
+
+    coins += autoMoos * multiplier;
+
+    render();
+
+  }
+
+}, 1000);
+
+/* =========================
+   ASCEND
+========================= */
+
+function ascend() {
+
+  const requirement = ascendRequirement();
+
+  if (clicks < requirement) {
+
+    showToast(
+      "⬆️ Need " +
+      formatNumber(requirement) +
+      " clicks to Ascend!"
+    );
+
+    return;
+  }
+
+  ascensions++;
+
+  multiplier *= 1.5;
+
+  coins = 0;
+  clicks = 0;
+  perClick = 1;
+  autoMoos = 0;
+  unlocked = 0;
+
+  shopItems.forEach(item => {
+
+    item.purchases = 0;
+    item.unlocked = false;
+
+  });
+
+  showToast(
+    "✨ ASCENDED! Multiplier is now x" +
+    multiplier.toFixed(2)
+  );
+
+  render();
+  saveGame();
+
+}
+
+/* =========================
+   UI
+========================= */
+
+function render() {
+
+  document.getElementById("coins").textContent =
+    formatNumber(coins);
+
+  document.getElementById("perClick").textContent =
+    formatNumber(perClick * multiplier);
+
+  document.getElementById("autoMoos").textContent =
+    formatNumber(autoMoos) + "/s";
+
+  document.getElementById("multiplier").textContent =
+    "x" + multiplier.toFixed(2);
+
+  document.getElementById("clicks").textContent =
+    formatNumber(clicks);
+
+  document.getElementById("ascensions").textContent =
+    ascensions;
+
+  document.getElementById("upgrades").textContent =
+    unlocked + "/100";
+
+  document.getElementById("bonus").textContent =
+    "x" + multiplier.toFixed(2);
+
+  document.getElementById("shopCount").textContent =
+    unlocked + "/100";
+
+  const requirement = ascendRequirement();
+
+  document.getElementById("ascendText").textContent =
+    formatNumber(clicks) +
+    " / " +
+    formatNumber(requirement) +
+    " clicks";
+
+  const progress =
+    Math.min(
+      100,
+      (clicks / requirement) * 100
+    );
+
+  document.getElementById("progressBar").style.width =
+    progress + "%";
+
+  document.getElementById("ascendBtn").textContent =
+    "⬆️ Ascend (" +
+    formatNumber(requirement) +
+    ")";
+
+  renderShop();
+
+}
+
+/* =========================
+   SHOP OPEN/CLOSE
+========================= */
+
+function openShop() {
+
+  document
+    .getElementById("shopOverlay")
+    .classList.add("open");
+
+}
+
+function closeShop() {
+
+  document
+    .getElementById("shopOverlay")
+    .classList.remove("open");
+
+}
+
+function overlayClick(event) {
+
+  if (event.target.id === "shopOverlay") {
+
+    closeShop();
+
+  }
+
+}
+
+/* =========================
+   TOAST
+========================= */
+
+let toastTimer;
+
+function showToast(text) {
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.textContent = text;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+
+    toast.classList.remove("show");
+
+  }, 1800);
+
+}
+
+/* =========================
+   FLOATING NUMBERS
+========================= */
+
+function createFloatingNumber(
+  text,
+  x,
+  y
+) {
+
+  const element =
+    document.createElement("div");
+
+  element.className = "float";
+
+  element.textContent = text;
+
+  element.style.left = x + "px";
+  element.style.top = y + "px";
+
+  document.body.appendChild(element);
+
+  setTimeout(() => {
+
+    element.remove();
+
+  }, 800);
+
+}
+
+/* =========================
+   SAVE GAME
+========================= */
+
+function saveGame() {
+
+  try {
+
+    const data = {
+
+      coins,
+      clicks,
+      perClick,
+      autoMoos,
+      multiplier,
+      ascensions,
+      unlocked,
+
+      purchases: shopItems.map(
+        item => item.purchases
+      ),
+
+      unlockedItems: shopItems.map(
+        item => item.unlocked
+      )
+
+    };
+
+    localStorage.setItem(
+      SAVE_KEY,
+      JSON.stringify(data)
+    );
+
+  } catch (error) {
+
+    console.log("Save unavailable.");
+
+  }
+
+}
+
+/* =========================
+   LOAD GAME
+========================= */
+
+function loadGame() {
+
+  try {
+
+    const saved =
+      localStorage.getItem(SAVE_KEY);
+
+    if (!saved) return;
+
+    const data =
+      JSON.parse(saved);
+
+    if (!data) return;
+
+    coins =
+      Number(data.coins) || 0;
+
+    clicks =
+      Number(data.clicks) || 0;
+
+    perClick =
+      Number(data.perClick) || 1;
+
+    autoMoos =
+      Number(data.autoMoos) || 0;
+
+    multiplier =
+      Number(data.multiplier) || 1;
+
+    ascensions =
+      Number(data.ascensions) || 0;
+
+    unlocked =
+      Number(data.unlocked) || 0;
+
+    if (Array.isArray(data.purchases)) {
+
+      data.purchases.forEach(
+        (value, index) => {
+
+          if (shopItems[index]) {
+
+            shopItems[index].purchases =
+              Number(value) || 0;
+
+          }
+
+        }
+      );
+
+    }
+
+    if (Array.isArray(data.unlockedItems)) {
+
+      data.unlockedItems.forEach(
+        (value, index) => {
+
+          if (shopItems[index]) {
+
+            shopItems[index].unlocked =
+              Boolean(value);
+
+          }
+
+        }
+      );
+
+    }
+
+  } catch (error) {
+
+    console.log("Save could not be loaded.");
+
+  }
+
+}
+
+/* =========================
+   RESET
+========================= */
+
+function resetGame() {
+
+  const confirmed =
+    confirm(
+      "Reset your AWSMeme Cow Clicker? This cannot be undone."
+    );
+
+  if (!confirmed) return;
+
+  coins = 0;
+  clicks = 0;
+  perClick = 1;
+  autoMoos = 0;
+  multiplier = 1;
+  ascensions = 0;
+  unlocked = 0;
+
+  shopItems.forEach(item => {
+
+    item.purchases = 0;
+    item.unlocked = false;
+
+  });
+
+  saveGame();
+  render();
+
+  showToast("🗑️ Game reset.");
+
+}
+
+/* =========================
+   KEYBOARD SUPPORT
+========================= */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.code === "Space" &&
+      document.activeElement.tagName !== "BUTTON"
+    ) {
+
+      event.preventDefault();
+
+      document.getElementById("cow").click();
+
+    }
+
+    if (event.key === "Escape") {
+
+      closeShop();
+
+    }
+
+  }
+);
+
+/* =========================
+   AUTO SAVE
+========================= */
+
+setInterval(function() {
+
+  saveGame();
+
+}, 10000);
+
+/* =========================
+   START
+========================= */
+
+loadGame();
+render();
+
+</script>
+
+</body>
+</html>
